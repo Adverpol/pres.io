@@ -10,3 +10,4 @@ Presentation viewer
     cd build
     meson setup ..
     ninja
+    ./pres.io
