@@ -1,0 +1,10 @@
+conanfile.py
+meson.build
+qml.qrc
+qml/main.qml
+qml/Snippet.qml
+src/main.cpp
+src/Util.cpp
+src/Util.h
+src/Launcher.cpp
+src/Launcher.h
