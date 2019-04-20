@@ -7,11 +7,14 @@ Item {
     id: root
 
     property string code: ""
-    property int border: 10
+    property int border: 50
 
     width:  parent.width - 2*border
-    height: 100
+    height: 300
     anchors { horizontalCenter: parent.horizontalCenter }
+
+    function previous(){ return false; }
+    function next(){ return false; }
 
     TextArea {
         id: snippet
@@ -22,16 +25,16 @@ Item {
         background: Rectangle { radius: 5; anchors { fill: parent } color: "#2e2f30" }
 
         color: "white"
-        text: cpp_util.syntaxHighlight(cpp_util.plainToRichText(code, font.family))
-        font.family: "Courier New"
+        text: cpp_util.syntaxHighlight(cpp_util.plainToRichText(code, font.family, font.pointSize))
+        font.pointSize: 24
+        font.family: "consolas"
         textFormat: TextEdit.RichText
 
         onEditingFinished: {
-            // getText to get unformatted
 //            console.info('FORMATTED', getFormattedText(0, length));
 //            console.info(getText(0, length));
 
-            var rich = cpp_util.plainToRichText(getText(0, length), font.family);
+            var rich = cpp_util.plainToRichText(getText(0, length), font.family, font.pointSize);
             text = cpp_util.syntaxHighlight(rich);
         }
 
@@ -47,7 +50,8 @@ Item {
         anchors { right: parent.right; top: parent.top; margins: 5}
         readOnly: true
 
-        font.family: "Courier"
+        font.family: "consolas"
+        font.pointSize: 24
         background: Rectangle { radius: 5; opacity: 0.8; anchors { fill: parent; } }
     }
 

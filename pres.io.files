@@ -3,6 +3,8 @@ meson.build
 qml.qrc
 qml/main.qml
 qml/Snippet.qml
+qml/Bullets.qml
+qml/PageColumn.qml
 src/main.cpp
 src/Util.cpp
 src/Util.h

@@ -12,12 +12,14 @@ Window {
     title: qsTr("pres.io")
 
     Row {
+        id: main_row
+
         anchors { fill: parent }
 
         Rectangle {
             id: content_rectangle
 
-            width: 0.6*parent.width
+            width: parent.width - view.width
             height: parent.height
 
             color: '#eeeeee'
@@ -56,6 +58,45 @@ Window {
                         loaded_object = new_object;
 
                         cpp_util.writeFile("content.txt", text);
+                    }
+                }
+            }
+        }
+
+        states: [
+            State {
+                name: "fullscreen"
+
+                PropertyChanges { target: root; visibility: Window.FullScreen}
+                PropertyChanges { target: view; width: 0 }
+            }
+        ]
+    }
+
+    MouseArea {
+        id: footer
+        width: parent.width
+        height: 20
+        hoverEnabled: true
+        anchors { bottom: parent.bottom }
+        Rectangle {
+            anchors { fill: parent }
+            opacity: 0.7
+            visible: footer.containsMouse
+
+            Row {
+                anchors { fill: parent }
+                spacing: 5
+                ToolButton {
+                    height: parent.height
+                    width: height
+                    text: root.visibility === Window.Windowed ? "\u279a" : "\u2798"
+                    onClicked: {
+                        if (root.visibility === Window.FullScreen){
+                            main_row.state = "";
+                        } else {
+                            main_row.state = "fullscreen";
+                        }
                     }
                 }
             }

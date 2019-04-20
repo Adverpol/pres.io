@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-QString Util::plainToRichText(QString text, QString fontFamily)
+QString Util::plainToRichText(QString text, QString fontFamily, int fontPointSize)
 {
     // Use this to get the whole html shebaing, doctype and everything included
     QTextDocument doc;
@@ -13,6 +13,7 @@ QString Util::plainToRichText(QString text, QString fontFamily)
     if (! fontFamily.isEmpty()){
         QFont font;
         font.setFamily(fontFamily);
+        font.setPointSize(fontPointSize);
         doc.setDefaultFont(font);
     }
 
@@ -31,7 +32,7 @@ QString Util::syntaxHighlight(QString richText)
 {
     auto keywords = {"int", "float", "double", "long", "string", "char", "auto",
                      "std",
-                     "return", "if", "then", "else", "while", "break", "#include", "#pragma once"};
+                     "return", "if", "then", "else", "while", "break", "include", "#pragma once"};
 
     for (const auto& keyword : keywords){
         QRegularExpression regexp(QString("\\b") + keyword + "\\b");
