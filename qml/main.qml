@@ -17,12 +17,12 @@ Window {
         anchors { fill: parent }
 
         Rectangle {
-            id: content_rectangle
+            id: content_wrapper
 
             width: parent.width - view.width
             height: parent.height
 
-            color: '#eeeeee'
+            color: '#222222'
 
             focus: true
             Keys.onPressed: {
@@ -31,6 +31,29 @@ Window {
                 } else if (event.key === Qt.Key_Left){
                     children[0].previous();
                 }
+            }
+
+            Rectangle {
+                id: content_rectangle
+
+                // Desired screen width/height, visible area is this size and is then scaled up/down to
+                // fit on the screen.
+                property int reqWidth: 1600
+                property int reqHeight: 900
+
+                function getScale(){
+                    var scale = Math.min(parent.width/reqWidth, parent.height/reqHeight);
+                    return scale;
+                }
+
+                border { color: "black"; width: 1 }
+
+                width: reqWidth
+                height: reqHeight
+
+                anchors { centerIn: parent }
+                color: "#eeeeee"
+                scale: getScale()
             }
         }
 
@@ -68,7 +91,7 @@ Window {
                 name: "fullscreen"
 
                 PropertyChanges { target: root; visibility: Window.FullScreen}
-                PropertyChanges { target: view; width: 0 }
+                PropertyChanges { target: view; width: 0; visible: false }
             }
         ]
     }
