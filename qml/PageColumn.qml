@@ -33,6 +33,7 @@ Column {
         }
     }
 
-    anchors { fill: parent; topMargin: 50 }
+    anchors { top: parent.top; bottom: parent.bottom; topMargin: 50 }
+    width: parent.width
     spacing: 50
 }

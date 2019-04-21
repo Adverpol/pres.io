@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 
     Util util;
 
-    qmlRegisterType<Launcher>("storio", 1, 0, "Launcher");
+    qmlRegisterType<Launcher>("presio", 1, 0, "Launcher");
 
     engine.rootContext()->setContextProperty("cpp_util", &util);
 

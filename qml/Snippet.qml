@@ -1,13 +1,15 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.12
 
-import storio 1.0
+import presio 1.0
 
 Item {
     id: root
 
     property string code: ""
     property int border: 50
+    property int fontsize: 20
 
     width:  parent.width - 2*border
     height: 300
@@ -16,23 +18,46 @@ Item {
     function previous(){ return false; }
     function next(){ return false; }
 
+    Rectangle {
+        id: background
+
+        radius: 5
+        anchors { fill: parent }
+        color: "#2e2f30"
+        visible: false // Shown as part of DropShadow
+    }
+
+    DropShadow {
+        anchors.fill: source
+        source: background
+
+        cached: true
+        horizontalOffset: 35
+        verticalOffset: 35
+        radius: 50.0
+        samples: 80
+
+        color: "#80000000"
+        smooth: true
+    }
+
     TextArea {
         id: snippet
 
         width: parent.width
         height: parent.height
 
-        background: Rectangle { radius: 5; anchors { fill: parent } color: "#2e2f30" }
+        background: Item {}
 
         color: "white"
         text: cpp_util.syntaxHighlight(cpp_util.plainToRichText(code, font.family, font.pointSize))
-        font.pointSize: 24
+        font.pointSize: root.fontsize
         font.family: "consolas"
         textFormat: TextEdit.RichText
 
         onEditingFinished: {
-//            console.info('FORMATTED', getFormattedText(0, length));
-//            console.info(getText(0, length));
+            //            console.info('FORMATTED', getFormattedText(0, length));
+            //            console.info(getText(0, length));
 
             var rich = cpp_util.plainToRichText(getText(0, length), font.family, font.pointSize);
             text = cpp_util.syntaxHighlight(rich);
@@ -51,7 +76,7 @@ Item {
         readOnly: true
 
         font.family: "consolas"
-        font.pointSize: 24
+        font.pointSize: root.fontsize
         background: Rectangle { radius: 5; opacity: 0.8; anchors { fill: parent; } }
     }
 
