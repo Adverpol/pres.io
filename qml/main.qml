@@ -17,7 +17,7 @@ Window {
         anchors { fill: parent }
 
         Rectangle {
-            id: content_wrapper
+            id: content_background
 
             width: parent.width - view.width
             height: parent.height
@@ -27,33 +27,38 @@ Window {
             focus: true
             Keys.onPressed: {
                 if (event.key === Qt.Key_Right){
-                    children[0].next();
+                    content_rectangle.children[0].next();
                 } else if (event.key === Qt.Key_Left){
-                    children[0].previous();
+                    content_rectangle.children[0].previous();
                 }
             }
 
-            Rectangle {
-                id: content_rectangle
+            Item {
+                id: content_margins
 
-                // Desired screen width/height, visible area is this size and is then scaled up/down to
-                // fit on the screen.
-                property int reqWidth: 1600
-                property int reqHeight: 900
+                // Some padding around the 'slide', could adjust in fullscreen mode
+                anchors { fill: parent; margins: 10 }
 
-                function getScale(){
-                    var scale = Math.min(parent.width/reqWidth, parent.height/reqHeight);
-                    return scale;
+                Rectangle {
+                    id: content_rectangle
+
+                    // Desired screen width/height, visible area is this size and is then scaled up/down to
+                    // fit on the screen.
+                    property int reqWidth: 1600
+                    property int reqHeight: 900
+
+                    function getScale(){
+                        var scale = Math.min(parent.width/reqWidth, parent.height/reqHeight);
+                        return scale;
+                    }
+
+                    width: reqWidth
+                    height: reqHeight
+
+                    anchors { centerIn: parent }
+                    color: "#eeeeee"
+                    scale: getScale()
                 }
-
-                border { color: "black"; width: 1 }
-
-                width: reqWidth
-                height: reqHeight
-
-                anchors { centerIn: parent }
-                color: "#eeeeee"
-                scale: getScale()
             }
         }
 
