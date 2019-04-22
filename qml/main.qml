@@ -123,10 +123,18 @@ Window {
                                                                 + "function previous(){ return children[0].previous(); } "
                                                                 + " Behavior on x { NumberAnimation{ duration: 400; } }"
                                                                 + "}", content_rectangle);
-                        if (wrapper_object === null)
-                            return null;
 
-                        var new_object = Qt.createQmlObject(qml, wrapper_object);
+                        var new_object = null;
+                        if (wrapper_object !== null){
+                            try {
+                                new_object = Qt.createQmlObject(qml, wrapper_object);
+                            } catch(error){
+                                wrapper_object.destroy();
+                                wrapper_object = null;
+                                console.error(error);
+                            }
+                        }
+
                         return [wrapper_object, new_object];
                     }
 
