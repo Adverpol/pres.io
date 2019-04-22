@@ -198,23 +198,50 @@ Window {
         }
 
         MouseArea {
-            id: footer
-            width: parent.width
-            height: 20
+            id: leftMenu
+            width: 25
+            height: parent.height
             hoverEnabled: true
-            anchors { bottom: parent.bottom }
+            anchors { left: parent.left }
             Rectangle {
-                anchors { fill: parent }
-                opacity: 0.7
-                visible: footer.containsMouse
+                anchors { top: parent.top; bottom: parent.bottom }
+                width: parent.width
+                x: leftMenu.containsMouse ? 0 : -parent.width
+                color: "#333333"
 
-                Row {
-                    anchors { fill: parent }
+                Behavior on x { NumberAnimation{ duration: 100} }
+
+                Column {
+                    width:  25
+                    height: 25
                     spacing: 5
+                    anchors { verticalCenter: parent.verticalCenter }
+
                     ToolButton {
-                        height: parent.height
-                        width: height
+                        id: control
+
+                        hoverEnabled: true
+                        height: leftMenu.width
+                        width:  leftMenu.width
+                        font.pointSize: 16
                         text: root.visibility === Window.Windowed ? "\u279a" : "\u2798"
+
+                        contentItem: Text {
+                            text: control.text
+                            font: control.font
+                            color: "#eeeeee"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            elide: Text.ElideRight
+                        }
+
+                        background: Rectangle {
+                            implicitWidth: 25
+                            implicitHeight: 25
+                            color: Qt.lighter("#444444", control.down ? 1.4 : 1)
+                            visible: control.down || control.hovered
+                        }
+
                         onClicked: {
                             if (root.visibility === Window.FullScreen){
                                 main_row.state = "";
