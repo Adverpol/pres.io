@@ -113,7 +113,7 @@ Window {
 
                     property var loaded_objects: []
 
-                    function createWrappedObjec(qml, xpos){
+                    function createWrappedObject(qml, xpos){
                         var wrapper_object = Qt.createQmlObject("import QtQuick 2.7; Item { width:" + content_rectangle.width  + ";"
                                                                 + "height:" + content_rectangle.height + ";"
                                                                 + "x: " + xpos + ";"
@@ -128,24 +128,24 @@ Window {
                         return [wrapper_object, new_object];
                     }
 
-                    function destroyLoadedObjects(){
+                    function destroyLoadedObjects(delay){
                         for (var i = loaded_objects.length-1; i >=0; --i){
                             if (loaded_objects[i]){
-                                // Delete late enough to allow animations to finish. Should probably
-                                // use a SeauentialAnimation instead to have proper timing.
-                                loaded_objects[i].destroy(500);
+                                loaded_objects[i].destroy(delay);
                             }
                         }
                     }
 
                     function setPage(pageFile, xpos){
-                        var new_objects = createWrappedObjec(cpp_util.readFile(root.current_page),
-                                                             xpos);
+                        var new_objects = createWrappedObject(cpp_util.readFile(root.current_page),
+                                                              xpos);
 
                         if (new_objects[0]){
                             if (loaded_objects.length > 0 && loaded_objects[0]){
                                 loaded_objects[0].x = -xpos
-                                destroyLoadedObjects();
+                                // Delete late enough to allow animations to finish. Should probably
+                                // use a SeauentialAnimation instead to have proper timing.
+                                destroyLoadedObjects(500);
                             }
 
                             new_objects[0].x = 0;
@@ -162,11 +162,12 @@ Window {
                     }
 
                     onTextChanged: {
-                        var new_objects = createWrappedObjec(text, 0);
+                        var new_objects = createWrappedObject(text, 0);
 
                         // Only destroy the old if the new is valid, otherwise we keep the old around
                         if (new_objects.length > 0 && new_objects[0]){
-                            destroyLoadedObjects();
+                            // Immediately delete, no page transition animations here
+                            destroyLoadedObjects(0);
                             loaded_objects = new_objects;
 
                             cpp_util.writeFile(root.current_page, text);
