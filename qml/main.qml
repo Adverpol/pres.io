@@ -40,16 +40,19 @@ Window {
                 focus: true
                 Keys.onPressed: {
                     if (event.key === Qt.Key_Right){
-                        if (root.page_index + 1 < root.pages.length){
-                            root.page_index += 1;
-                            editor.setNextPage(root.current_page);
+                        if (! content_rectangle.children[0].next()){
+                            if (root.page_index + 1 < root.pages.length){
+                                root.page_index += 1;
+                                editor.setNextPage(root.current_page);
+                            }
                         }
 
-                        // content_rectangle.children[0].next();
                     } else if (event.key === Qt.Key_Left){
-                        if (root.page_index > 0){
-                            root.page_index -= 1;
-                            editor.setPreviousPage(root.current_page);
+                        if (! content_rectangle.children[0].previous()){
+                            if (root.page_index > 0){
+                                root.page_index -= 1;
+                                editor.setPreviousPage(root.current_page);
+                            }
                         }
                     }
                 }
@@ -114,6 +117,8 @@ Window {
                         var wrapper_object = Qt.createQmlObject("import QtQuick 2.7; Item { width:" + content_rectangle.width  + ";"
                                                                 + "height:" + content_rectangle.height + ";"
                                                                 + "x: " + xpos + ";"
+                                                                + "function next(){ return children[0].next(); } "
+                                                                + "function previous(){ return children[0].previous(); } "
                                                                 + " Behavior on x { NumberAnimation{ duration: 400; } }"
                                                                 + "}", content_rectangle);
                         if (wrapper_object === null)
@@ -128,7 +133,7 @@ Window {
                             if (loaded_objects[i]){
                                 // Delete late enough to allow animations to finish. Should probably
                                 // use a SeauentialAnimation instead to have proper timing.
-                                loaded_objects[i].destroy(1000);
+                                loaded_objects[i].destroy(500);
                             }
                         }
                     }
