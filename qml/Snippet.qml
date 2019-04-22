@@ -18,27 +18,12 @@ Item {
     function previous(){ return false; }
     function next(){ return false; }
 
-    Rectangle {
+    ShadedRectangle {
         id: background
 
-        radius: 5
         anchors { fill: parent }
+
         color: "#2e2f30"
-        visible: false // Shown as part of DropShadow
-    }
-
-    DropShadow {
-        anchors.fill: source
-        source: background
-
-        cached: true
-        horizontalOffset: 35
-        verticalOffset: 35
-        radius: 50.0
-        samples: 80
-
-        color: "#80000000"
-        smooth: true
     }
 
     TextArea {

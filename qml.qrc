@@ -4,5 +4,7 @@
         <file>qml/Snippet.qml</file>
         <file>qml/Bullets.qml</file>
         <file>qml/PageColumn.qml</file>
+        <file>qml/ShadedRectangle.qml</file>
+        <file>qml/TitlePage.qml</file>
     </qresource>
 </RCC>
