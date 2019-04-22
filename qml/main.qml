@@ -107,11 +107,13 @@ Window {
                 TextArea {
                     id: editor
 
-                    font.family: "Courier New"
+                    font.family: "consolas"
+                    selectByMouse: true
 
                     Component.onCompleted: { text = cpp_util.readFile(root.current_page); }
 
                     property var loaded_objects: []
+                    property bool _disableTextSignal: false
 
                     function createWrappedObject(qml, xpos){
                         var wrapper_object = Qt.createQmlObject("import QtQuick 2.7; Item { width:" + content_rectangle.width  + ";"
@@ -137,8 +139,8 @@ Window {
                     }
 
                     function setPage(pageFile, xpos){
-                        var new_objects = createWrappedObject(cpp_util.readFile(root.current_page),
-                                                              xpos);
+                        var content = cpp_util.readFile(root.current_page);
+                        var new_objects = createWrappedObject(content, xpos);
 
                         if (new_objects[0]){
                             if (loaded_objects.length > 0 && loaded_objects[0]){
@@ -151,6 +153,10 @@ Window {
                             new_objects[0].x = 0;
                             loaded_objects = new_objects;
                         }
+
+                        _disableTextSignal = true;
+                        text = content;
+                        _disableTextSignal = false;
                     }
 
                     function setNextPage(pageFile){
@@ -162,6 +168,10 @@ Window {
                     }
 
                     onTextChanged: {
+                        if (_disableTextSignal){
+                            return;
+                        }
+
                         var new_objects = createWrappedObject(text, 0);
 
                         // Only destroy the old if the new is valid, otherwise we keep the old around

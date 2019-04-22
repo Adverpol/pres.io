@@ -10,3 +10,5 @@ src/Util.cpp
 src/Util.h
 src/Launcher.cpp
 src/Launcher.h
+src/TextModel.cpp
+src/TextModel.h

@@ -28,6 +28,7 @@ QString Util::richToPlainText(QString text)
     return doc.toPlainText();
 }
 
+// todo!sv reimplement using QSyntaxHighlighter
 QString Util::syntaxHighlight(QString richText)
 {
     auto keywords = {"int", "float", "double", "long", "string", "char", "auto",

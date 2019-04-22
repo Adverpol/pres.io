@@ -7,8 +7,8 @@ qt5_mod = import('qt5')
 qt5_deps = dependency('qt5', modules: ['Core', 'Quick', 'Xml', 'XmlPatterns', 'Gui', 'Qml'])
 
 processed = qt5_mod.preprocess(
-    moc_headers : ['src/Util.h', 'src/Launcher.h'],
-    moc_sources : ['src/Util.cpp', 'src/Launcher.cpp'], # must have #include"moc_helperFile.cpp"
+    moc_headers : ['src/Util.h', 'src/Launcher.h', 'src/TextModel.h'],
+    moc_sources : ['src/Util.cpp', 'src/Launcher.cpp', 'src/TextModel.cpp'], # must have #include"moc_helperFile.cpp"
     #ui_files    : 'mainWindow.ui',
     qresources : 'qml.qrc'
 )
@@ -28,6 +28,7 @@ cal = executable('pres.io',
            sources     : ['src/main.cpp',
                           'src/Util.cpp',
                           'src/Launcher.cpp',
+                          'src/TextModel.cpp',
                           processed],
            dependencies: [qt5_deps],
            include_directories: [],
