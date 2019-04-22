@@ -12,7 +12,17 @@ Window {
     title: qsTr("pres.io")
 
     property int page_index: 0
-    readonly property var pages: ["page1.qml", "page2.qml"]
+    readonly property var pages: [
+        "page1.qml",
+        "page2.qml",
+        "page3.qml",
+        "page4.qml",
+        "page5.qml",
+        "page6.qml",
+        "page7.qml",
+        "page8.qml",
+        "page9.qml"
+    ]
     readonly property string current_page: pages[page_index]
 
     // todo!sv setting focus to true should be enough, but it isn't,
@@ -119,8 +129,8 @@ Window {
                         var wrapper_object = Qt.createQmlObject("import QtQuick 2.7; Item { width:" + content_rectangle.width  + ";"
                                                                 + "height:" + content_rectangle.height + ";"
                                                                 + "x: " + xpos + ";"
-                                                                + "function next(){ return children[0].next(); } "
-                                                                + "function previous(){ return children[0].previous(); } "
+                                                                + "function next(){ if (children.length === 0) return false; return children[0].next(); } "
+                                                                + "function previous(){ if (children.length === 0) return false; return children[0].previous(); } "
                                                                 + " Behavior on x { NumberAnimation{ duration: 400; } }"
                                                                 + "}", content_rectangle);
 
@@ -131,6 +141,10 @@ Window {
                             } catch(error){
                                 wrapper_object.destroy();
                                 wrapper_object = null;
+
+                                // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
+                                // can get the required info for highlighting directly from the error, no need
+                                // to parse text
                                 console.error(error);
                             }
                         }

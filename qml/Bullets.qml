@@ -10,6 +10,8 @@ Item {
 
     property alias text: text_model.text
     property alias title: title_text.text
+    property alias active_index: bullets_view.active_index
+    property alias count: bullets_view.count
 
     property int fontSize: 28
     property int titleFontSize: 32
