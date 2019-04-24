@@ -11,7 +11,7 @@ Item {
     property int border: 50
     property int fontsize: 20
 
-    width:  parent.width - 2*border
+    width:  1500
     height: 300
     anchors { horizontalCenter: parent.horizontalCenter }
 

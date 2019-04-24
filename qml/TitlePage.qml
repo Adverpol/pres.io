@@ -6,7 +6,8 @@ Item {
     function next(){ return false; }
     function previous(){ return false; }
 
-    anchors { fill: parent }
+    width:  500
+    height: 500
 
     property alias title: title_field.text
     property alias subtitle: subtitle_field.text
