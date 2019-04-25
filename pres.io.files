@@ -7,6 +7,7 @@ qml/Bullets.qml
 qml/PageColumn.qml
 qml/ShadedRectangle.qml
 qml/TitlePage.qml
+qml/Presentation.qml
 src/main.cpp
 src/Util.cpp
 src/Util.h

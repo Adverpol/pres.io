@@ -142,7 +142,8 @@ Item {
 
             TextEdit {
                 id: line_text
-                text: item_text
+                // hack to display a newline for an empty line, avoids fiddling with heights.
+                text: item_text ? item_text : " "
                 readOnly: true
                 font.pointSize: root.fontSize
             }

@@ -6,5 +6,6 @@
         <file>qml/PageColumn.qml</file>
         <file>qml/ShadedRectangle.qml</file>
         <file>qml/TitlePage.qml</file>
+        <file>qml/Presentation.qml</file>
     </qresource>
 </RCC>

@@ -106,37 +106,7 @@ Window {
                     function createWrappedObject(qml, xpos)
                     {
                         try {
-                            // Wrap in swipeview this way: could also create the swipe view
-                            // as child of content_rectangle, to allow the qml file to have
-                            // multiple children we would need to wrap inside of e.g. Item anyway
-                            // as createQmlObject creates a single object.
-                            //
-                            // This does mess up imports i.e. page qml cannot contain imports, could
-                            // provide a separate text field for those
-                            var new_object = Qt.createQmlObject(
-                       "import QtQuick 2.7
-                        import QtQuick.Controls 2.3
-
-                        SwipeView {
-                            id: content_view
-
-                            clip: true
-                            anchors { fill: parent }
-
-                            function next(){
-                                if (! currentItem.next()){
-                                    incrementCurrentIndex();
-                                }
-                                return true;
-                            }
-
-                            function previous(){
-                                if (! currentItem.previous()){
-                                    decrementCurrentIndex();
-                                }
-                                return true;
-                            }
-                            " + qml + "}", content_rectangle);
+                            var new_object = Qt.createQmlObject(qml, content_rectangle);
                         } catch(error){
                             // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
                             // can get the required info for highlighting directly from the error, no need
