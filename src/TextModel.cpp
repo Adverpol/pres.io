@@ -6,12 +6,19 @@
 namespace
 {
 
+enum class ParserState
+{
+    NewParagraph,
+    Append
+};
+
 std::vector<TextItem> parseText(const QString& text)
 {
     std::vector<TextItem> items;
 
     std::vector<int> runningNumbers = {0};
     int consequtiveNewlines = 0;
+    ParserState state = ParserState::NewParagraph;
 
     for (const auto& line : text.split('\n'))
     {
@@ -21,25 +28,36 @@ std::vector<TextItem> parseText(const QString& text)
             consequtiveNewlines = 0;
         }
 
-        if (consequtiveNewlines == 2){
+        if (consequtiveNewlines >= 2){
             runningNumbers.clear();
             // First newline was appended, which is good, don't append
             // the second.
+
+            state = ParserState::NewParagraph;
+
+            // Don't reset consequtiveNewlines: eat all the newlines.
             continue;
         }
 
+        // Requires a space after the items i.e. the line will have min
+        // length of items+1 if the return value is > 0
         auto countStartingItems = [](const QString& line, QChar item)
         {
             int items = 0;
             while(line.length() > items && line[items] == item){
                 ++items;
             }
-            return items;
+
+            if (line.length() > items && line[items] == ' '){
+                return items;
+            } else {
+                return 0;
+            }
         };
 
         if (const int bullets = countStartingItems(line, '*'); bullets > 0)
         {
-            items.emplace_back(TextItem{line.mid(bullets), 0, bullets-1});
+            items.emplace_back(TextItem{line.mid(bullets+1), 0, bullets-1});
         } else if (const int numbers = countStartingItems(line, '#'); numbers > 0)
         {
             const int indent = numbers - 1;
@@ -54,14 +72,16 @@ std::vector<TextItem> parseText(const QString& text)
                 ++runningNumbers[static_cast<size_t>(indent)];
             }
 
-            items.emplace_back(TextItem{line.mid(numbers), runningNumbers.back(), indent});
-        } else if (items.empty())
+            items.emplace_back(TextItem{line.mid(numbers+1), runningNumbers.back(), indent});
+        } else if (items.empty() || state == ParserState::NewParagraph)
         {
             items.emplace_back(TextItem{line, -1, 0});
         } else
         {
             items.back().text += '\n' + line;
         }
+
+        state = ParserState::Append;
     }
 
     return items;
