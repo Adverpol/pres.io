@@ -7,5 +7,6 @@
         <file>qml/ShadedRectangle.qml</file>
         <file>qml/TitlePage.qml</file>
         <file>qml/Presentation.qml</file>
+        <file>qml/Acronym.qml</file>
     </qresource>
 </RCC>
