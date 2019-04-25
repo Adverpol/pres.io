@@ -15,8 +15,11 @@ Column {
     anchors { horizontalCenter: parent.horizontalCenter }
 
     function next(){
-        if (detail.state === ""){
-            detail.state = "visible";
+        if (state === ""){
+            state = "title";
+            return true;
+        } else if (state === "title"){
+            state = "detail";
             return true;
         } else {
             return false;
@@ -24,8 +27,11 @@ Column {
     }
 
     function previous(){
-        if (detail.state !== ""){
-            detail.state = "";
+        if (state === "detail"){
+            state = "title";
+            return true;
+        } else if (state === "title"){
+            state = "";
             return true;
         } else {
             return false;
@@ -34,6 +40,9 @@ Column {
 
     ListView {
         id: view
+
+        opacity: 0.1
+        Behavior on opacity {NumberAnimation {duration: 500}}
 
         anchors { horizontalCenter: parent.horizontalCenter }
         width: count * 155 - 5
@@ -89,12 +98,18 @@ Column {
         opacity: 0
 
         Behavior on opacity {NumberAnimation {duration: 500}}
-
-        states: [
-            State {
-                name: "visible"
-                PropertyChanges { target: detail; opacity: 1 }
-            }
-        ]
     }
+
+    states: [
+        State {
+            name: "title"
+            PropertyChanges { target: view; opacity: 1 }
+        },
+        State {
+            name: "detail"
+            PropertyChanges { target: view; opacity: 1 }
+            PropertyChanges { target: detail; opacity: 1 }
+        }
+
+    ]
 }

@@ -4,13 +4,14 @@ import QtQuick.Controls 2.2
 Column {
     id: root
 
-    property int active_child: 0
-
     // Makes sure the correct padding is in place on first opening the column.
     // padding on previous/next is manually added.
     topPadding: 50
 
+    // Distance between items
     spacing: 50
+
+    property int active_child: 0
 
     function previous()
     {

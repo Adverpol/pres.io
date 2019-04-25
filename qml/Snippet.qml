@@ -15,8 +15,22 @@ Item {
     height: 300
     anchors { horizontalCenter: parent.horizontalCenter }
 
-    function previous(){ return false; }
-    function next(){ return false; }
+    function previous(){
+        if (state === "active"){
+            state = "";
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function next(){
+        if (state === ""){
+            state = "active";
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     ShadedRectangle {
         id: background
@@ -31,6 +45,7 @@ Item {
 
         width: parent.width
         height: parent.height
+        opacity: 0.1
 
         background: Item {}
 
@@ -82,4 +97,11 @@ Item {
             }
         }
     }
+
+    states: [
+        State {
+            name: "active"
+            PropertyChanges { target: snippet; opacity: 1. }
+        }
+    ]
 }
