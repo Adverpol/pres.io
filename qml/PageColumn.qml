@@ -11,21 +11,21 @@ Column {
     // Distance between items
     spacing: 50
 
-    property int active_child: 0
+    property int activeChild: 0
 
     function previous()
     {
-        if (active_child < 0 || children.length === 0){
+        if (activeChild < 0 || children.length === 0){
             return false;
         }
 
-        if(! children[active_child].previous()){
-            if (active_child == 0){
+        if(! children[activeChild].previous()){
+            if (activeChild == 0){
                 return false;
             }
 
-            active_child -= 1;
-            y = - children[active_child].y + topPadding;
+            activeChild -= 1;
+            y = - children[activeChild].y + topPadding;
         }
 
         return true;
@@ -33,16 +33,16 @@ Column {
 
     function next()
     {
-        if (active_child >= children.length)
+        if (activeChild >= children.length)
             return false;
 
-        if (! children[active_child].next()){
-            if (active_child + 1 === children.length){
+        if (! children[activeChild].next()){
+            if (activeChild + 1 === children.length){
                 return false;
             }
 
-            active_child += 1;
-            y = - children[active_child].y + topPadding;
+            activeChild += 1;
+            y = - children[activeChild].y + topPadding;
         }
 
         return true;
