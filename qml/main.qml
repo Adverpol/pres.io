@@ -172,17 +172,17 @@ Window {
                         }
                     }
                 }
-
-                states: [
-                    State {
-                        name: "fullscreen"
-
-                        PropertyChanges { target: root; visibility: Window.FullScreen}
-                        PropertyChanges { target: view; width: 0; visible: false }
-                        PropertyChanges { target: content_background; focus: true }
-                    }
-                ]
             }
+
+            states: [
+                State {
+                    name: "fullscreen"
+
+                    PropertyChanges { target: root; visibility: Window.FullScreen}
+                    PropertyChanges { target: view; width: 0; visible: false }
+                    PropertyChanges { target: content_background; focus: true }
+                }
+            ]
         }
 
         MouseArea {
