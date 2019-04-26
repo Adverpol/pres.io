@@ -15,7 +15,7 @@ Column {
 
     function previous()
     {
-        if (active_child < 0){
+        if (active_child < 0 || children.length === 0){
             return false;
         }
 
