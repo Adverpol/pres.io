@@ -4,10 +4,10 @@ Presentation viewer
 
 # Setup
 
-    git clone https://github.com/Adverpol/pres.io.git # or ssh
-    cd pres.io
-    mkdir build
-    cd build
-    meson setup ..
-    ninja
-    ./pres.io
+    $ git clone https://github.com/Adverpol/pres.io.git # or ssh
+    $ cd pres.io
+    $ mkdir build
+    $ cd build
+    $ meson
+    $ ninja
+    $ ./pres.io
