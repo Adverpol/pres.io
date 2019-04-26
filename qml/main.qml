@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
+import QtQuick.Dialogs 1.3
 
 
 Window {
@@ -11,12 +12,24 @@ Window {
     height: 800
     title: qsTr("pres.io")
 
-    readonly property string current_page: "presentation.qml"
+    property string currentPage: "presentation.qml"
 
     // todo!sv setting focus to true should be enough, but it isn't,
     // I don't think I understand focus well enough... good enough for now,
     // allows direct keyboard navigation
     Component.onCompleted: { content_background.forceActiveFocus(); }
+
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        nameFilters: [ "Presentation files (*.qml)", "All files (*)" ]
+
+        onAccepted: {
+            root.currentPage = cpp_util.urlToLocalFile(fileDialog.fileUrl);
+            editor.openFile(root.currentPage);
+        }
+    }
 
     // Is this even necessary?
     FocusScope {
@@ -86,66 +99,90 @@ Window {
                 }
             }
 
-            ScrollView {
-                id: view
-
+            Column {
                 width: 0.4*parent.width
                 height: parent.height
 
-                TextArea {
-                    id: editor
+                Item {
+                    width:  parent.width
+                    height: 30
 
-                    font.family: "consolas"
-                    selectByMouse: true
-
-                    Component.onCompleted: { text = cpp_util.readFile(root.current_page); }
-
-                    property var loaded_object: null
-                    property bool _disableTextSignal: false
-
-                    function createWrappedObject(qml, xpos)
-                    {
-                        try {
-                            var new_object = Qt.createQmlObject(qml, content_rectangle);
-                        } catch(error){
-                            // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
-                            // can get the required info for highlighting directly from the error, no need
-                            // to parse text
-                            console.error(error);
-                        }
-
-                        return new_object;
+                    Button {
+                        anchors { fill: parent }
+                        text: root.currentPage
+                        leftPadding: 5
+                        // verticalAlignment: Text.AlignVCenter
+                        onClicked: fileDialog.open()
                     }
+                }
 
-                    onTextChanged: {
-                        if (_disableTextSignal){
-                            return;
+
+
+                ScrollView {
+                    id: view
+
+                    width:  parent.width
+                    height: parent.height - 30
+
+                    TextArea {
+                        id: editor
+
+                        font.family: "consolas"
+                        selectByMouse: true
+
+                        function openFile(fileName){
+                            text = cpp_util.readFile(root.currentPage);
                         }
 
-                        var new_object = createWrappedObject(text, 0);
+                        Component.onCompleted: { openFile(root.currentPage); }
 
-                        // Only destroy the old if the new is valid, otherwise we keep the old around
-                        if (new_object){
-                            if (loaded_object){
-                                loaded_object.destroy();
+                        property var loaded_object: null
+                        property bool _disableTextSignal: false
+
+                        function createWrappedObject(qml, xpos)
+                        {
+                            try {
+                                var new_object = Qt.createQmlObject(qml, content_rectangle);
+                            } catch(error){
+                                // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
+                                // can get the required info for highlighting directly from the error, no need
+                                // to parse text
+                                console.error(error);
                             }
-                            loaded_object = new_object;
 
-                            cpp_util.writeFile(root.current_page, text);
+                            return new_object;
+                        }
+
+                        onTextChanged: {
+                            if (_disableTextSignal){
+                                return;
+                            }
+
+                            var new_object = createWrappedObject(text, 0);
+
+                            // Only destroy the old if the new is valid, otherwise we keep the old around
+                            if (new_object){
+                                if (loaded_object){
+                                    loaded_object.destroy();
+                                }
+                                loaded_object = new_object;
+
+                                cpp_util.writeFile(root.currentPage, text);
+                            }
                         }
                     }
                 }
+
+                states: [
+                    State {
+                        name: "fullscreen"
+
+                        PropertyChanges { target: root; visibility: Window.FullScreen}
+                        PropertyChanges { target: view; width: 0; visible: false }
+                        PropertyChanges { target: content_background; focus: true }
+                    }
+                ]
             }
-
-            states: [
-                State {
-                    name: "fullscreen"
-
-                    PropertyChanges { target: root; visibility: Window.FullScreen}
-                    PropertyChanges { target: view; width: 0; visible: false }
-                    PropertyChanges { target: content_background; focus: true }
-                }
-            ]
         }
 
         MouseArea {

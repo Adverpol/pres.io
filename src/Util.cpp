@@ -1,5 +1,6 @@
 #include "Util.h"
 
+#include <QUrl>
 #include <QtGui>
 
 #include <iostream>
@@ -64,4 +65,9 @@ QString Util::readFile(QString fileName)
 
     QTextStream in(&file);
     return in.readAll();
+}
+
+QString Util::urlToLocalFile(QString url)
+{
+    return QUrl(url).toLocalFile();
 }

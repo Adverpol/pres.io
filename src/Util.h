@@ -13,4 +13,5 @@ public slots:
     static QString syntaxHighlight(QString richText);
     static void    writeFile(QString fileName, QString content);
     static QString readFile(QString fileName);
+    static QString urlToLocalFile(QString url);
 };
