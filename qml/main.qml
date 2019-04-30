@@ -14,11 +14,17 @@ Window {
 
     property string currentPage: "presentation.qml"
 
+    property var errors: []
+
     // todo!sv setting focus to true should be enough, but it isn't,
     // I don't think I understand focus well enough... good enough for now,
     // allows direct keyboard navigation
     Component.onCompleted: { content_background.forceActiveFocus(); }
 
+    onErrorsChanged:
+    {
+        error_painter.requestPaint();
+    }
 
     FileDialog {
         id: fileDialog
@@ -122,57 +128,117 @@ Window {
                     id: view
 
                     width:  parent.width
-                    height: parent.height - 30
+                    height: parent.height - 130
 
-                    TextArea {
-                        id: editor
+                    clip: true
 
-                        font.family: "consolas"
-                        selectByMouse: true
+                    Row {
+                        Rectangle {
+                            width: 40
+                            height: root.height
+                            color: "#eee"
 
-                        function openFile(fileName){
-                            text = cpp_util.readFile(root.currentPage);
-                        }
+                            Canvas {
+                                id: error_painter
 
-                        Component.onCompleted: { openFile(root.currentPage); }
+                                anchors { fill: parent }
 
-                        property var loaded_object: null
-                        property bool _disableTextSignal: false
+                                onPaint: {
+                                    var ctx = getContext("2d");
+                                    ctx.clearRect(0, 0, width, height);
+                                    ctx.fillStyle = Qt.rgba(1, 1, 0.2, 1);
 
-                        function createWrappedObject(qml, xpos)
-                        {
-                            try {
-                                var new_object = Qt.createQmlObject(qml, content_rectangle);
-                            } catch(error){
-                                // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
-                                // can get the required info for highlighting directly from the error, no need
-                                // to parse text
-                                console.error(error);
-                            }
-
-                            return new_object;
-                        }
-
-                        onTextChanged: {
-                            if (_disableTextSignal){
-                                return;
-                            }
-
-                            var new_object = createWrappedObject(text, 0);
-
-                            // Only destroy the old if the new is valid, otherwise we keep the old around
-                            if (new_object){
-                                if (loaded_object){
-                                    loaded_object.destroy();
+                                    for (var idx in root.errors){
+                                        console.log(errors[idx].ylow);
+                                        var mid = 0.5*(errors[idx].ylow+errors[idx].yhigh);
+                                        ctx.fillRect(25, mid-5, 10, 10);
+                                    }
                                 }
-                                loaded_object = new_object;
-
-                                cpp_util.writeFile(root.currentPage, text);
                             }
                         }
+
+                        TextEdit {
+                            id: editor
+
+                            font.family: "consolas"
+                            selectByMouse: true
+
+                            function openFile(fileName){
+                                text = cpp_util.readFile(root.currentPage);
+                            }
+
+                            Component.onCompleted: { openFile(root.currentPage); }
+
+                            property var loaded_object: null
+                            property bool _disableTextSignal: false
+
+                            function createWrappedObject(qml, xpos)
+                            {
+                                var error_data = []
+                                try {
+                                    var new_object = Qt.createQmlObject(qml, content_rectangle);
+                                } catch(error){
+                                    console.error(error);
+                                    // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
+                                    // can get the required info for highlighting directly from the error, no need
+                                    // to parse text
+                                    // lineNumber, columnNumber, message
+                                    var lineHeight = implicitHeight / Math.max(1, lineCount);
+
+                                    for (var idx in error.qmlErrors){
+                                        // -1 to have cursor on error, not one past
+                                        // -1 extra to convert to zero-based
+                                        var linePos = Math.max(0, error.qmlErrors[idx].lineNumber-1) * lineHeight;
+                                        error_data.push({ylow: linePos,
+                                                            yhigh: linePos+lineHeight,
+                                                            lineNumber: error.qmlErrors[idx].lineNumber,
+                                                            columnNumber: error.qmlErrors[idx].columnNumber,
+                                                            message: error.qmlErrors[idx].message});
+                                        //                                console.error(error.qmlErrors);
+                                    }
+                                }
+
+                                root.errors = error_data;
+
+                                return new_object;
+                            }
+
+                            onTextChanged: {
+                                if (_disableTextSignal){
+                                    return;
+                                }
+
+                                var new_object = createWrappedObject(text, 0);
+
+                                // Only destroy the old if the new is valid, otherwise we keep the old around
+                                if (new_object){
+                                    if (loaded_object){
+                                        loaded_object.destroy();
+                                    }
+                                    loaded_object = new_object;
+
+                                    cpp_util.writeFile(root.currentPage, text);
+                                }
+                            }
+                        } // TextEdit
                     }
                 }
-            }
+
+                Rectangle {
+                    width: parent.width
+                    height: 100
+                    color: "#eee"
+
+                    ListView {
+                        id: errors_list
+                        anchors { fill: parent; topMargin: 5 }
+                        clip: true
+
+                        model: root.errors
+                        delegate: error_delegate
+                    }
+                }
+            } // Column
 
             states: [
                 State {
@@ -238,6 +304,28 @@ Window {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    Component {
+        id: error_delegate
+
+        Item{
+            width: parent.width
+            height: 20
+
+            Row {
+                anchors { fill: parent; leftMargin: 5 }
+
+                Label {
+                    width: 40
+                    text: modelData.lineNumber + ":" + modelData.columnNumber
+                }
+
+                Label {
+                    text: modelData.message
                 }
             }
         }

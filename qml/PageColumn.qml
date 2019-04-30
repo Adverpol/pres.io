@@ -1,5 +1,12 @@
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.2
+
+// To keep the PageColumn at the end:
+//
+// onPositioningComplete: { setActiveChild(children.length-1); }
+// // To prevent flickering
+// Behavior on y {}
+
 
 Column {
     id: root
@@ -43,6 +50,12 @@ Column {
 
             activeChild += 1;
             y = - children[activeChild].y + topPadding;
+
+            // Immediately advance the new child. It shoudl've been e.g.
+            // almost transparant, immediately 'next-ing' makes it
+            // visible which prevents having to hit the right arrow twice
+            // when advancing to a next item.
+            children[activeChild].next();
         }
 
         return true;

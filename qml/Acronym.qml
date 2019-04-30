@@ -1,6 +1,16 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
 
+/**
+    Usage e.g.
+
+\code
+Acronym {
+    strings: "You Ain't Gonna Need It".split(' ')
+}
+\endcode
+*/
+
 Column {
     id: root
 
