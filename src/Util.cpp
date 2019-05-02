@@ -71,3 +71,18 @@ QString Util::urlToLocalFile(QString url)
 {
     return QUrl(url).toLocalFile();
 }
+
+Util::Util(const QCoreApplication &app)
+    : m_settings(app.organizationName(), "pres.io")
+{
+}
+
+QString Util::getLastUsedFile() const
+{
+    return m_settings.value("main/lastUsedFile").toString();
+}
+
+void Util::setLastUsedFile(QString value)
+{
+    m_settings.setValue("main/lastUsedFile", value);
+}

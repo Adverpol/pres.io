@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSettings>
 
 #include "Util.h"
 #include "Launcher.h"
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
 
     QQmlApplicationEngine engine;
 
-    Util util;
+    Util util(app);
 
     qmlRegisterType<Launcher>("presio", 1, 0, "Launcher");
     qmlRegisterType<TextModel>("presio", 1, 0, "TextModel");

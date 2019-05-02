@@ -19,7 +19,14 @@ Window {
     // todo!sv setting focus to true should be enough, but it isn't,
     // I don't think I understand focus well enough... good enough for now,
     // allows direct keyboard navigation
-    Component.onCompleted: { content_background.forceActiveFocus(); }
+    Component.onCompleted: {
+        content_background.forceActiveFocus();
+        if (cpp_util.lastUsedFile != ""){
+            root.currentPage = cpp_util.lastUsedFile;
+        }
+
+        editor.openFile(root.currentPage);
+    }
 
     onErrorsChanged:
     {
@@ -34,6 +41,7 @@ Window {
         onAccepted: {
             root.currentPage = cpp_util.urlToLocalFile(fileDialog.fileUrl);
             editor.openFile(root.currentPage);
+            cpp_util.lastUsedFile = root.currentPage
         }
     }
 
@@ -175,8 +183,6 @@ Window {
                             function openFile(fileName){
                                 text = cpp_util.readFile(root.currentPage);
                             }
-
-                            Component.onCompleted: { openFile(root.currentPage); }
 
                             property var loaded_object: null
                             property bool _disableTextSignal: false
