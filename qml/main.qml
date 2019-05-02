@@ -49,7 +49,7 @@ Window {
             Rectangle {
                 id: content_background
 
-                width: parent.width - view.width
+                width: parent.width - editor_scroll_view.width
                 height: parent.height
 
                 color: '#222222'
@@ -125,7 +125,7 @@ Window {
 
 
                 ScrollView {
-                    id: view
+                    id: editor_scroll_view
 
                     width:  parent.width
                     height: parent.height - 130
@@ -135,7 +135,7 @@ Window {
                     Row {
                         Rectangle {
                             width: 40
-                            height: root.height
+                            height: editor_scroll_view.implicitHeight
                             color: "#eee"
 
                             Canvas {
@@ -143,15 +143,24 @@ Window {
 
                                 anchors { fill: parent }
 
+                                height: 2*parent.height
+                                clip: false
+
                                 onPaint: {
                                     var ctx = getContext("2d");
+                                    ctx.resetTransform();
                                     ctx.clearRect(0, 0, width, height);
                                     ctx.fillStyle = Qt.rgba(1, 1, 0.2, 1);
 
                                     for (var idx in root.errors){
-                                        console.log(errors[idx].ylow);
                                         var mid = 0.5*(errors[idx].ylow+errors[idx].yhigh);
-                                        ctx.fillRect(25, mid-5, 10, 10);
+                                        ctx.fillRect(0, mid-6, width, 11);
+                                    }
+
+                                    ctx.textAlign = "end";
+                                    ctx.textBaseline = "middle";
+                                    for (var line = 0; line < editor.lineCount; ++line){
+                                        ctx.strokeText("" + (line+1), width-10, (line+0.5)*editor.lineHeight);
                                     }
                                 }
                             }
@@ -171,6 +180,7 @@ Window {
 
                             property var loaded_object: null
                             property bool _disableTextSignal: false
+                            readonly property double lineHeight: implicitHeight / Math.max(1, lineCount);
 
                             function createWrappedObject(qml, xpos)
                             {
@@ -183,7 +193,6 @@ Window {
                                     // can get the required info for highlighting directly from the error, no need
                                     // to parse text
                                     // lineNumber, columnNumber, message
-                                    var lineHeight = implicitHeight / Math.max(1, lineCount);
 
                                     for (var idx in error.qmlErrors){
                                         // -1 to have cursor on error, not one past
