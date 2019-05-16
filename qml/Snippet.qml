@@ -9,7 +9,7 @@ Item {
 
     property string code: ""
     property int border: 50
-    property int fontsize: 20
+    property int fontsize: 16
 
     width:  1500
     height: 300
