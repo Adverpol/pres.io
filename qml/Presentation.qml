@@ -26,4 +26,40 @@ SwipeView {
         }
         return true;
     }
+
+
+    function getPresentationState()
+    {
+        var childState = {};
+
+        for (var idx in contentChildren)
+        {
+            try{
+                childState[idx] = contentChildren[idx].getPresentationState();
+            } catch (error){
+                childState[idx] = {};
+            }
+        }
+
+        return {"currentIndex": currentIndex,
+            "children": childState
+        };
+    }
+
+    function setPresentationState(state)
+    {
+        if (state === null)
+            return;
+
+        currentIndex = state.currentIndex;
+
+        for (var idx in contentChildren)
+        {
+            try{
+                contentChildren[idx].setPresentationState(state["children"][idx]);
+            } catch (error){
+                console.error(error);
+            }
+        }
+    }
 }

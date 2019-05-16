@@ -188,29 +188,39 @@ Window {
                             property bool _disableTextSignal: false
                             readonly property double lineHeight: implicitHeight / Math.max(1, lineCount);
 
-                            function createWrappedObject(qml, xpos)
+                            function parseError(error)
+                            {
+                                var error_data = [];
+
+                                // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
+                                // can get the required info for highlighting directly from the error, no need
+                                // to parse text
+                                // lineNumber, columnNumber, message
+
+                                for (var idx in error.qmlErrors){
+                                    // -1 to have cursor on error, not one past
+                                    // -1 extra to convert to zero-based
+                                    var linePos = Math.max(0, error.qmlErrors[idx].lineNumber-1) * lineHeight;
+                                    error_data.push({ylow: linePos,
+                                                        yhigh: linePos+lineHeight,
+                                                        lineNumber: error.qmlErrors[idx].lineNumber,
+                                                        columnNumber: error.qmlErrors[idx].columnNumber,
+                                                        message: error.qmlErrors[idx].message});
+                                    //                                console.error(error.qmlErrors);
+                                }
+
+                                return error_data;
+                            }
+
+                            function createWrappedObject(qml, xpos, state)
                             {
                                 var error_data = []
                                 try {
                                     var new_object = Qt.createQmlObject(qml, content_rectangle);
+                                    new_object.setPresentationState(state);
                                 } catch(error){
                                     console.error(error);
-                                    // todo!sv see https://doc.qt.io/qt-5/qml-qtqml-qt.html#createQmlObject-method,
-                                    // can get the required info for highlighting directly from the error, no need
-                                    // to parse text
-                                    // lineNumber, columnNumber, message
-
-                                    for (var idx in error.qmlErrors){
-                                        // -1 to have cursor on error, not one past
-                                        // -1 extra to convert to zero-based
-                                        var linePos = Math.max(0, error.qmlErrors[idx].lineNumber-1) * lineHeight;
-                                        error_data.push({ylow: linePos,
-                                                            yhigh: linePos+lineHeight,
-                                                            lineNumber: error.qmlErrors[idx].lineNumber,
-                                                            columnNumber: error.qmlErrors[idx].columnNumber,
-                                                            message: error.qmlErrors[idx].message});
-                                        //                                console.error(error.qmlErrors);
-                                    }
+                                    error_data = parseError(error);
                                 }
 
                                 root.errors = error_data;
@@ -223,7 +233,22 @@ Window {
                                     return;
                                 }
 
-                                var new_object = createWrappedObject(text, 0);
+                                cpp_util.isActive = false;
+
+                                var state = null;
+                                if (loaded_object){
+                                    try {
+                                        state = loaded_object.getPresentationState();
+                                    } catch (error){
+                                        // This catch is important: if getPresentationState errors out
+                                        // e.g. because it's being typed, subsequent code will not be run
+                                        // i.e. user is for ever unable to complete getPresentationState
+                                        console.error(error);
+                                        root.errors = parseError(error);
+                                    }
+                                }
+
+                                var new_object = createWrappedObject(text, 0, state);
 
                                 // Only destroy the old if the new is valid, otherwise we keep the old around
                                 if (new_object){
@@ -234,6 +259,8 @@ Window {
 
                                     cpp_util.writeFile(root.currentPage, text);
                                 }
+
+                                cpp_util.isActive = true;
                             }
                         } // TextEdit
                     }

@@ -32,7 +32,6 @@ Column {
             }
 
             activeChild -= 1;
-            y = - children[activeChild].y + topPadding;
         }
 
         return true;
@@ -48,8 +47,7 @@ Column {
                 return false;
             }
 
-            activeChild += 1;
-            y = - children[activeChild].y + topPadding;
+            activeChild += 1;            
 
             // Immediately advance the new child. It shoudl've been e.g.
             // almost transparant, immediately 'next-ing' makes it
@@ -61,5 +59,21 @@ Column {
         return true;
     }
 
-    Behavior on y { NumberAnimation { duration: 300 } }
+    function setActiveChild(index){
+        if (index >= 0 && index < children.length){
+            activeChild = index;
+        }
+    }
+
+    onActiveChildChanged: {
+        y = - children[activeChild].y + topPadding;
+    }
+
+    onPositioningComplete: {
+        // Needed when changing the active child before all items are laid out,
+        // which happens when restoring state
+        y = - children[activeChild].y + topPadding;
+    }
+
+    Behavior on y { NumberAnimation { duration: cpp_util.isActive ? 300 : 0 } }
 }

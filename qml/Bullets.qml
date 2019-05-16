@@ -36,6 +36,14 @@ Item {
         return true;
     }
 
+    function getPresentationState(){
+        return {"active_index": bullets_view.active_index};
+    }
+
+    function setPresentationState(savedState){
+        bullets_view.active_index = savedState["active_index"];
+    }
+
     ShadedRectangle {
         id: background
         anchors { fill: parent }

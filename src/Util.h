@@ -11,9 +11,12 @@ class Util : public QObject
 Q_OBJECT
 
 Q_PROPERTY(QString lastUsedFile READ getLastUsedFile WRITE setLastUsedFile NOTIFY lastUsedFileChanged)
+Q_PROPERTY(int     isActive     READ isActive WRITE setActive NOTIFY isActiveChanged)
+
 
 signals:
     void lastUsedFileChanged();
+    void isActiveChanged();
 
 public slots:
     static QString plainToRichText(QString text, QString fontFamily = "", int fontPointSize = 10);
@@ -23,6 +26,9 @@ public slots:
     static QString readFile(QString fileName);
     static QString urlToLocalFile(QString url);
 
+    bool isActive() const;
+    void setActive(bool active);
+
 public:
     Util(const QCoreApplication& app);
 
@@ -31,4 +37,5 @@ public:
 
 private:
     QSettings m_settings;
+    bool m_isActive = false;
 };

@@ -32,6 +32,14 @@ Item {
         }
     }
 
+    function getPresentationState(){
+        return {"state": state};
+    }
+
+    function setPresentationState(savedState){
+        state = savedState["state"];
+    }
+
     ShadedRectangle {
         id: background
 

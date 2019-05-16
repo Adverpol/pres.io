@@ -48,11 +48,19 @@ Column {
         }
     }
 
+    function getPresentationState(){
+        return {"state": state};
+    }
+
+    function setPresentationState(savedState){
+        state = savedState["state"];
+    }
+
     ListView {
         id: view
 
         opacity: 0.1
-        Behavior on opacity {NumberAnimation {duration: 500}}
+        Behavior on opacity {NumberAnimation {duration: cpp_util.isActive ? 500 : 0}}
 
         anchors { horizontalCenter: parent.horizontalCenter }
         width: count * 155 - 5
@@ -107,7 +115,7 @@ Column {
 
         opacity: 0
 
-        Behavior on opacity {NumberAnimation {duration: 500}}
+        Behavior on opacity {NumberAnimation {duration: cpp_util.isActive ? 500 : 0}}
     }
 
     states: [

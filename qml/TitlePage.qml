@@ -13,6 +13,12 @@ Item {
     property alias subtitle: subtitle_field.text
     property alias author: author_field.text
 
+    function getPresentationState(){
+    }
+
+    function setPresentationState(savedState){
+    }
+
     Column {
         anchors { fill: parent; topMargin: 250}
         spacing: 10

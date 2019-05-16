@@ -72,6 +72,17 @@ QString Util::urlToLocalFile(QString url)
     return QUrl(url).toLocalFile();
 }
 
+bool Util::isActive() const
+{
+    return m_isActive;
+}
+
+void Util::setActive(bool active)
+{
+    m_isActive = active;
+    isActiveChanged();
+}
+
 Util::Util(const QCoreApplication &app)
     : m_settings(app.organizationName(), "pres.io")
 {
