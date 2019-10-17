@@ -155,6 +155,7 @@ Item {
                 text: item_text ? item_text : " "
                 readOnly: true
                 font.pointSize: root.fontSize
+                textFormat: TextEdit.RichText
             }
         }
     }
