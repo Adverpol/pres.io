@@ -9,6 +9,7 @@ qml/ShadedRectangle.qml
 qml/TitlePage.qml
 qml/Presentation.qml
 qml/Acronym.qml
+qml/ThePublicAnswers.qml
 src/main.cpp
 src/Util.cpp
 src/Util.h

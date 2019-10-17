@@ -6,7 +6,7 @@
 /usr/include/qt/QtNetwork
 /usr/include/qt/QtXmlPatterns
 
-/home/sanderv/Qt/5.12.0/gcc_64/include/
-/home/sanderv/Qt/5.12.0/gcc_64/include/QtCore
-/home/sanderv/Qt/5.12.0/gcc_64/include/QtGui
-
+/home/sanderv/Qt/5.12.1/gcc_64/include/
+/home/sanderv/Qt/5.12.1/gcc_64/include/QtCore
+/home/sanderv/Qt/5.12.1/gcc_64/include/QtGui
+/home/sanderv/Qt/5.12.1/gcc_64/include/QtQuick
