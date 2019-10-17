@@ -6,7 +6,7 @@ import presio 1.0
 Item {
     id: root
     width: parent.width - 100
-    height: 300
+    height: bullets_view.contentHeight + wrap_column.anchors.bottomMargin + title_background.height
 
     property alias text: text_model.text
     property alias title: title_text.text
@@ -55,15 +55,15 @@ Item {
     }
 
     Column {
-        anchors { fill: parent }
+        id: wrap_column
 
-        spacing: 15
+        anchors { fill: parent; bottomMargin: 10 }
 
         Rectangle {
             id: title_background
 
             width: parent.width
-            height: 60
+            height: visible ? 60 : 0
             radius: 5
             color: 'steelblue'
 
@@ -95,13 +95,14 @@ Item {
             id: bullets_view
 
             width: parent.width
-            height: root.height - title_text.height - 15
+            height: root.height - title_text.height
 
             property int active_index: -1
 
             spacing: 5
             model: text_model
             delegate: bullet_delegate
+            clip: true
         }
     }
 
