@@ -21,7 +21,7 @@ Window {
     // allows direct keyboard navigation
     Component.onCompleted: {
         content_background.forceActiveFocus();
-        if (cpp_util.lastUsedFile != ""){
+        if (cpp_util.lastUsedFile !== ""){
             root.currentPage = cpp_util.lastUsedFile;
         }
 
@@ -57,7 +57,8 @@ Window {
             Rectangle {
                 id: content_background
 
-                width: parent.width - editor_scroll_view.width
+                width: parent.width
+//                width: parent.width - editor_scroll_view.width
                 height: parent.height
 
                 color: '#222222'
@@ -114,6 +115,8 @@ Window {
             }
 
             Column {
+                visible: false
+
                 width: 0.4*parent.width
                 height: parent.height
 
@@ -228,7 +231,8 @@ Window {
                                 return new_object;
                             }
 
-                            onTextChanged: {
+                            function load(text)
+                            {
                                 if (_disableTextSignal){
                                     return;
                                 }
@@ -257,12 +261,21 @@ Window {
                                     }
                                     loaded_object = new_object;
 
-                                    cpp_util.writeFile(root.currentPage, text);
+//                                    cpp_util.writeFile(root.currentPage, text);
                                 }
-
-                                cpp_util.isActive = true;
+//                                cpp_util.isActive = true;
                             }
-                        } // TextEdit
+
+                            onTextChanged: load(text)
+
+                            Timer{
+                                repeat: true
+                                interval: 5000
+                                running: true
+
+                                onTriggered: editor.openFile(root.currentPage)
+                            }
+                        }
                     }
                 }
 

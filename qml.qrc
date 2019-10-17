@@ -8,5 +8,7 @@
         <file>qml/TitlePage.qml</file>
         <file>qml/Presentation.qml</file>
         <file>qml/Acronym.qml</file>
+        <file>qml/ThePublicAnswers.qml</file>
+        <file>qml/programming.qml</file>
     </qresource>
 </RCC>
