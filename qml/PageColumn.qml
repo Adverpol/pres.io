@@ -49,7 +49,7 @@ Column {
 
             activeChild += 1;            
 
-            // Immediately advance the new child. It shoudl've been e.g.
+            // Immediately advance the new child. It should've been e.g.
             // almost transparant, immediately 'next-ing' makes it
             // visible which prevents having to hit the right arrow twice
             // when advancing to a next item.
@@ -63,6 +63,18 @@ Column {
         if (index >= 0 && index < children.length){
             activeChild = index;
         }
+    }
+
+    function getPresentationState(){
+        var childState = children[activeChild].getPresentationState();
+
+        return {"active": activeChild,
+            "childState": childState};
+    }
+
+    function setPresentationState(state){
+        setActiveChild(state.active);
+        children[activeChild].setPresentationState(state["childState"]);
     }
 
     onActiveChildChanged: {
