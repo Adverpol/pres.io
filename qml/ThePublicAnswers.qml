@@ -4,11 +4,13 @@ import QtGraphicalEffects 1.12
 
 
 Column {
-    id: answers_root
+    id: root
     spacing: 50
 
     property alias question: question_input.text
     property var model: []
+
+    property bool isShown: false
 
     onModelChanged: {
         for (var i = 0; i < model.length; ++i){
@@ -20,6 +22,12 @@ Column {
     }
 
     function next(){
+        if (! root.isShown)
+        {
+            root.isShown = true;
+            return true;
+        }
+
         for (var i = 0; i < answers.count; ++i){
             if ( answers.get(i).guessed !== true){
                 answers.setProperty(i, "guessed", true);
@@ -38,6 +46,12 @@ Column {
             }
         }
 
+        if (root.isShown)
+        {
+            root.isShown = false;
+            return true;
+        }
+
         return false;
     }
 
@@ -46,6 +60,8 @@ Column {
 
     TextInput{
         id: question_input
+
+        opacity: root.isShown ? 1 : 0.05
 
         text: "Your question here?"
 
@@ -114,7 +130,6 @@ Column {
                     opacity: 0.2
                     visible: ! guessed
                 }
-
             }
         }
     }
