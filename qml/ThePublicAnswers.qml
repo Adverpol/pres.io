@@ -93,10 +93,12 @@ Column {
 
     GridView {
         id: grid
-        height: 200
+        // 2-column setup
+        height: cellHeight * Math.ceil(answers.count*0.5)
         width: 1300
         anchors { horizontalCenter: parent.horizontalCenter }
-        flow: GridView.FlowTopToBottom
+        flow: GridView.FlowLeftToRight
+        // Half of 1300
         cellWidth: 650
         cellHeight: 100
 
