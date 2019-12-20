@@ -116,7 +116,7 @@ Item {
 
             opacity: index > delegate_root.ListView.view.active_index ? 0.1 : 1
 
-            anchors { left: parent.left; leftMargin: 15 }
+            anchors { left: parent.left; right: parent.right; leftMargin: 15 }
             spacing: 5
 
             Item {
@@ -151,11 +151,14 @@ Item {
 
             TextEdit {
                 id: line_text
+                width: parent.width - ((is_number || is_bullet) ? token_width + 5
+                                                                : 0)
                 // hack to display a newline for an empty line, avoids fiddling with heights.
                 text: item_text ? item_text : " "
                 readOnly: true
                 font.pointSize: root.fontSize
                 textFormat: TextEdit.RichText
+                wrapMode: Text.WordWrap
             }
         }
     }
