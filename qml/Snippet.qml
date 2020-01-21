@@ -12,7 +12,9 @@ Item {
     property int fontsize: 16
 
     width:  1500
-    height: 300
+    height: snippet.contentHeight
+            + snippet.topPadding
+            + snippet.bottomPadding
     anchors { horizontalCenter: parent.horizontalCenter }
 
     function previous(){
@@ -51,8 +53,7 @@ Item {
     TextArea {
         id: snippet
 
-        width: parent.width
-        height: parent.height
+        anchors { fill: parent }
         opacity: 0.1
 
         background: Item {}
@@ -64,9 +65,6 @@ Item {
         textFormat: TextEdit.RichText
 
         onEditingFinished: {
-            //            console.info('FORMATTED', getFormattedText(0, length));
-            //            console.info(getText(0, length));
-
             var rich = cpp_util.plainToRichText(getText(0, length), font.family, font.pointSize);
             text = cpp_util.syntaxHighlight(rich);
         }
