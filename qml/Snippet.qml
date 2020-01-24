@@ -11,7 +11,7 @@ Item {
     property int border: 50
     property int fontsize: 16
 
-    width:  1500
+    width:  parent.width - 100
     height: snippet.contentHeight
             + snippet.topPadding
             + snippet.bottomPadding
