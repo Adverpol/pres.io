@@ -26,7 +26,12 @@ Column {
             return false;
         }
 
-        if(! children[activeChild].previous()){
+        var advance = true;
+        if ('previous' in children[activeChild]){
+            advance = !children[activeChild].previous();
+        }
+
+        if(advance){
             if (activeChild == 0){
                 return false;
             }
@@ -42,7 +47,12 @@ Column {
         if (activeChild >= children.length)
             return false;
 
-        if (! children[activeChild].next()){
+        var advance = true;
+        if ('next' in children[activeChild]){
+            advance = !children[activeChild].next();
+        }
+
+        if (advance){
             if (activeChild + 1 === children.length){
                 return false;
             }
@@ -53,7 +63,9 @@ Column {
             // almost transparant, immediately 'next-ing' makes it
             // visible which prevents having to hit the right arrow twice
             // when advancing to a next item.
-            children[activeChild].next();
+            if ('next' in children[activeChild]){
+                children[activeChild].next();
+            }
         }
 
         return true;
@@ -66,7 +78,12 @@ Column {
     }
 
     function getPresentationState(){
-        var childState = children[activeChild].getPresentationState();
+        var childState = {};
+        if ('getPresentationState' in children[activeChild]){
+            childState = children[activeChild].getPresentationState();
+        } else {
+            console.info(children[activeChild] + " doesn't have getPresentationState")
+        }
 
         return {"active": activeChild,
             "childState": childState};
@@ -74,7 +91,12 @@ Column {
 
     function setPresentationState(state){
         setActiveChild(state.active);
-        children[activeChild].setPresentationState(state["childState"]);
+
+        if ('setPresentationState' in children[activeChild]){
+            children[activeChild].setPresentationState(state["childState"]);
+        } else {
+            console.info(children[activeChild] + " doesn't have setPresentationState")
+        }
     }
 
     onActiveChildChanged: {
