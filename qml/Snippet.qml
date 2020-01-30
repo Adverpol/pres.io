@@ -7,6 +7,8 @@ import presio 1.0
 Item {
     id: root
 
+    // set inline to true to remove background colour
+    property bool inline: false
     property string code: ""
     property int border: 50
     property int fontsize: 16
@@ -45,6 +47,8 @@ Item {
     ShadedRectangle {
         id: background
 
+        visible: ! root.inline
+
         anchors { fill: parent }
 
         color: "#2e2f30"
@@ -58,15 +62,16 @@ Item {
 
         background: Item {}
 
-        color: "white"
-        text: cpp_util.syntaxHighlight(cpp_util.plainToRichText(code, font.family, font.pointSize))
+        color: root.inline ? "black" : "white"
+        text: cpp_util.highlightRichText(cpp_util.plainToRichText(code, font.family, font.pointSize))
         font.pointSize: root.fontsize
         font.family: "consolas"
         textFormat: TextEdit.RichText
 
         onEditingFinished: {
+            // Do in these two steps to break the binding loop
             var rich = cpp_util.plainToRichText(getText(0, length), font.family, font.pointSize);
-            text = cpp_util.syntaxHighlight(rich);
+            text = cpp_util.highlightRichText(rich);
         }
 
         onPressed: output.text = ""
