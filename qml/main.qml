@@ -263,6 +263,7 @@ Window {
 
 //                                    cpp_util.writeFile(root.currentPage, text);
                                 }
+                                // comment/uncomment to (not) have dynamic transitions
 //                                cpp_util.isActive = true;
                             }
 
