@@ -29,19 +29,39 @@ QString Util::richToPlainText(QString text)
     return doc.toPlainText();
 }
 
-// todo!sv reimplement using QSyntaxHighlighter
-QString Util::syntaxHighlight(QString richText)
+QString Util::highlightPlainText(QString plainText, QString fontFamily, int fontPointSize)
 {
-    auto keywords = {"int", "float", "double", "long", "string", "char", "auto",
+    return highlightRichText(plainToRichText(plainText, fontFamily, fontPointSize));
+}
+
+// todo!sv reimplement using QSyntaxHighlighter
+QString Util::highlightRichText(QString richText)
+{
+    auto keywords = {"int", "float", "double", "long", "string", "char", "auto", "const",
                      "std",
                      "return", "if", "then", "else", "while", "break", "include", "#pragma once"};
 
-    for (const auto& keyword : keywords){
-        QRegularExpression regexp(QString("\\b") + keyword + "\\b");
-        richText.replace(regexp, QString("<span style=\"color:#45c6d6\">") + keyword + "</span>");
+    // Whole next code should be replaced by QSyntaxHighlighter or even better a library that does that
+    // for us...
+    QString parsed;
+    for (auto line: richText.split('\n')){
+        // Contains //, don't parse as comment
+        if (line == R"(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">)"){
+            parsed += line;
+        } else if (const auto commentIndex = line.indexOf("//"); commentIndex >= 0){
+            line.insert(commentIndex, "<span style=\"color:#cd8b00\">");
+            line += "</span>";
+        } else {
+            for (const auto& keyword : keywords){
+                QRegularExpression regexp(QString("\\b") + keyword + "\\b");
+                line.replace(regexp, QString("<span style=\"color:#808bed\">") + keyword + "</span>");
+            }
+        }
+
+        parsed += line;
     }
 
-    return richText;
+    return parsed;
 }
 
 void Util::writeFile(QString fileName, QString content)
