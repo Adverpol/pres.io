@@ -80,6 +80,7 @@ QString Util::readFile(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)){
+        std::cerr << "Unable to open file '" << fileName.toStdString() << "' for reading" << std::endl;
         return "";
     }
 
