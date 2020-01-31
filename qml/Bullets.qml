@@ -15,6 +15,9 @@ Item {
 
     property int fontSize: 28
     property int titleFontSize: 32
+    readonly property bool isActive: bullets_view.active_index >= 0
+
+    opacity: isActive ? 1 : 0.02
 
     anchors { horizontalCenter: parent.horizontalCenter }
 
@@ -42,7 +45,7 @@ Item {
 
     function setPresentationState(savedState){
         bullets_view.active_index = savedState["active_index"];
-    }
+    }    
 
     ShadedRectangle {
         id: background
@@ -72,6 +75,10 @@ Item {
                 id: background_hack
 
                 color: parent.color
+                // hack: painted over title_background, if both have opacity 0.1 then the part where
+                // they overlap is actually darker, so just hide this one in semi-transparent mode,
+                // this is pretty much invisible wheras the overlap is noticable
+                visible: root.isActive
                 height: Math.max(0, parent.height - parent.radius)
 
                 anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
@@ -114,7 +121,9 @@ Item {
             property int bullet_size: 12
             property int token_width: 40
 
-            opacity: index > delegate_root.ListView.view.active_index ? 0.1 : 1
+            opacity: isActive ? index > delegate_root.ListView.view.active_index ? 0.02
+                                                                                 : 1
+                              : 1
 
             anchors { left: parent.left; right: parent.right; leftMargin: 15 }
             spacing: 5

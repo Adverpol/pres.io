@@ -61,9 +61,9 @@ Column {
     TextInput{
         id: question_input
 
-        opacity: root.isShown ? 1 : 0.05
-
         text: "Your question here?"
+
+        opacity: root.isShown ? 1 : 0.02
 
         font.pointSize: 40
         anchors { horizontalCenter: parent.horizontalCenter }
@@ -75,6 +75,7 @@ Column {
         anchors { horizontalCenter: parent.horizontalCenter }
         width: 500
         height: 75
+        opacity: root.isShown ? 1 : 0.05
 
         onAccepted: {
             for (var i = 0; i < answers.count; ++i){
@@ -101,6 +102,7 @@ Column {
         // Half of 1300
         cellWidth: 650
         cellHeight: 100
+        opacity: root.isShown ? 1 : 0.1
 
         model: answers
         delegate: answerDelegate
