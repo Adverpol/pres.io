@@ -70,6 +70,8 @@ Window {
                         content_rectangle.children[0].next();
                     } else if (event.key === Qt.Key_Left){
                         content_rectangle.children[0].previous();
+                    } else {
+                        content_rectangle.children[0].key_pressed(event);
                     }
                 }
 
