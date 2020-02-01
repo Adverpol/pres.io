@@ -13,8 +13,8 @@ Item {
     property alias active_index: bullets_view.active_index
     property alias count: bullets_view.count
 
-    property int fontSize: 28
-    property int titleFontSize: 32
+    property int fontSize: 26
+    property int titleFontSize: 30
     readonly property bool isActive: bullets_view.active_index >= 0
 
     opacity: isActive ? 1 : 0.02
