@@ -24,7 +24,7 @@ Window {
             root.currentPage = cpp_util.lastUsedFile;
         }
 
-        editor.openFile(root.currentPage);
+        editor.openCurrentFile();
     }
 
     onErrorsChanged:
@@ -39,7 +39,7 @@ Window {
 
         onAccepted: {
             root.currentPage = cpp_util.urlToLocalFile(fileDialog.fileUrl);
-            editor.openFile(root.currentPage);
+            editor.openCurrentFile();
             cpp_util.lastUsedFile = root.currentPage
         }
     }
@@ -184,8 +184,24 @@ Window {
                             font.family: "consolas"
                             selectByMouse: true
 
-                            function openFile(fileName){
-                                text = cpp_util.readFile(root.currentPage);
+                            // don't use int because it's not big enough for what javascript returns (Number)
+                            property var filelastChangeEpoch: 0
+
+                            function openCurrentFile(){
+                                var lastChangeEpoch = cpp_util.lastModified(root.currentPage).getTime();
+
+                                // Don't bother for checking newer modification time, if it's different we reload. Use GetTime
+                                // i.e. time since unix epoch because there is a difference between what we get from C++ and what
+                                // we store in a fileLastModified date field, even if they're exactly the same (have the same time
+                                // since epoch). Maybe it's a javascript <-/> qml typing thing
+                                if (   (! editor.filelastChangeEpoch)
+                                    || (lastChangeEpoch !== editor.filelastChangeEpoch))
+                                {
+                                    // Do print something (for now) to make sure we reload when expected and don't reload when not
+                                    console.info("Loading", "'" + root.currentPage + "'");
+                                    text = cpp_util.readFile(root.currentPage);
+                                    editor.filelastChangeEpoch = lastChangeEpoch;
+                                }
                             }
 
                             property var loaded_object: null
@@ -238,8 +254,6 @@ Window {
                                     return;
                                 }
 
-//                                cpp_util.isActive = false;
-
                                 var state = null;
                                 if (loaded_object){
                                     try {
@@ -264,18 +278,20 @@ Window {
 
 //                                    cpp_util.writeFile(root.currentPage, text);
                                 }
-                                // comment/uncomment to (not) have dynamic transitions
-//                                cpp_util.isActive = true;
                             }
 
                             onTextChanged: load(text)
 
                             Timer{
                                 repeat: true
-                                interval: 5000
+                                // Can check quite often because we check file modification time before actually doing something
+                                interval: 1000
                                 running: true
 
-                                onTriggered: editor.openFile(root.currentPage)
+
+                                onTriggered: {
+                                    editor.openCurrentFile()
+                                }
                             }
                         }
                     }
