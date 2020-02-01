@@ -1,6 +1,9 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
+// todo!sv this is actually no good because we can't disable the animation so it'll
+// always animate even in non-animate edit mode. Should have a ListView or a Row
+// or something, where every child is made screen-sized + there is an animation.
 SwipeView {
     id: root
 
@@ -14,6 +17,10 @@ SwipeView {
     interactive: false
 
     function next(){
+        if (! currentItem){
+            setCurrentIndex(0);
+        }
+
         if (! currentItem.next()){
             incrementCurrentIndex();
         }
@@ -21,6 +28,10 @@ SwipeView {
     }
 
     function previous(){
+        if (! currentItem){
+            setCurrentIndex(0);
+        }
+
         if (! currentItem.previous()){
             decrementCurrentIndex();
         }
