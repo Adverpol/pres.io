@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include <QDateTime>
 
 
 class QCoreApplication;
@@ -26,6 +27,7 @@ public slots:
     static void    writeFile(QString fileName, QString content);
     static QString readFile(QString fileName);
     static QString urlToLocalFile(QString url);
+    static QDateTime lastModified(QString url);
 
     bool isActive() const;
     void setActive(bool active);

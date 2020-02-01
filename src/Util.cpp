@@ -88,6 +88,11 @@ QString Util::readFile(QString fileName)
     return in.readAll();
 }
 
+QDateTime Util::lastModified(QString url)
+{
+    return QFileInfo(url).lastModified();
+}
+
 QString Util::urlToLocalFile(QString url)
 {
     return QUrl(url).toLocalFile();
