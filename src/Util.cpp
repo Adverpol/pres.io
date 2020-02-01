@@ -100,8 +100,10 @@ bool Util::isActive() const
 
 void Util::setActive(bool active)
 {
-    m_isActive = active;
-    isActiveChanged();
+    if (active != m_isActive){
+        m_isActive = active;
+        isActiveChanged();
+    }
 }
 
 Util::Util(const QCoreApplication &app)
