@@ -78,12 +78,18 @@ Column {
         opacity: root.isShown ? 1 : 0.05
 
         onAccepted: {
+            // Check if there is exactly one answer that substring matches
+            var found = [];
             for (var i = 0; i < answers.count; ++i){
-                if (text.toUpperCase() === answers.get(i).answer.toUpperCase()){
-                    answers.setProperty(i, "guessed", true);
-                    break;
+                if (answers.get(i).answer.toUpperCase().includes(text.toUpperCase())){
+                    found.push(i);
                 }
             }
+
+            if (found.length === 1){
+                answers.setProperty(found[0], "guessed", true);
+            }
+
             text = "";
         }
     }
