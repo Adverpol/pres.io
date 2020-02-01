@@ -3,7 +3,6 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.3
 
-
 Window {
     id: root
 
@@ -239,7 +238,7 @@ Window {
                                     return;
                                 }
 
-                                cpp_util.isActive = false;
+//                                cpp_util.isActive = false;
 
                                 var state = null;
                                 if (loaded_object){
@@ -324,10 +323,46 @@ Window {
                 Behavior on x { NumberAnimation{ duration: 100} }
 
                 Column {
-                    width:  25
-                    height: 25
+                    width:  leftMenu.width
                     spacing: 5
-                    anchors { verticalCenter: parent.verticalCenter }
+                    anchors { verticalCenter: parent.verticalCenter; left: parent.left }
+
+                    CheckBox {
+                        id: animate_check
+
+                        checked: cpp_util.isActive
+
+                        onCheckedChanged: {
+                            cpp_util.isActive = checked;
+                        }
+
+                        width: leftMenu.width
+                        height: 75
+                        text: "Animate"
+                        padding: 0
+
+                        indicator: Item {}
+                        spacing: 0
+
+                        contentItem: Rectangle {
+                            width: animate_check.width
+                            height: animate_check.height
+                            color: animate_check.checked ? "#444444" : "transparent"
+
+                            Text {
+                                text: animate_check.text
+                                font: animate_check.font
+                                color: "white"
+                                width: parent.height
+                                height: parent.width
+                                y: parent.height
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                rotation: -90
+                                transformOrigin: Item.TopLeft
+                            }
+                        }
+                    }
 
                     ToolButton {
                         id: control
