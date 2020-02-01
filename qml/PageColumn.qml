@@ -90,6 +90,11 @@ Column {
     }
 
     function setPresentationState(state){
+        if (! state){
+            console.info("Trying to set invalid state");
+            return;
+        }
+
         setActiveChild(state.active);
 
         if ('setPresentationState' in children[activeChild]){
