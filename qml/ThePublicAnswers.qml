@@ -49,7 +49,9 @@ Column {
         if (root.isShown)
         {
             root.isShown = false;
-            return true;
+            // If we get there we've hidden the last answer -> immediately go back to
+            // previous item i.e. hiding the TPA itself does not use a single back-arrow
+            return false;
         }
 
         return false;
