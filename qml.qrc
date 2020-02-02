@@ -10,5 +10,6 @@
         <file>qml/Acronym.qml</file>
         <file>qml/ThePublicAnswers.qml</file>
         <file>qml/programming.qml</file>
+        <file>qml/ShadedImage.qml</file>
     </qresource>
 </RCC>
