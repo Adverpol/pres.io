@@ -40,3 +40,10 @@ qml/programming.qml
 qml/state.qml
 build_debug
 CMakeLists.txt.user
+
+pres.io.cflags
+pres.io.config
+pres.io.creator
+pres.io.cxxflags
+pres.io.files
+pres.io.includes
