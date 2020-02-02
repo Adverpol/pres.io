@@ -11,5 +11,6 @@
         <file>qml/ThePublicAnswers.qml</file>
         <file>qml/programming.qml</file>
         <file>qml/ShadedImage.qml</file>
+        <file>qml/ChapterTitle.qml</file>
     </qresource>
 </RCC>
