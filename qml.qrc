@@ -12,5 +12,6 @@
         <file>qml/programming.qml</file>
         <file>qml/ShadedImage.qml</file>
         <file>qml/ChapterTitle.qml</file>
+        <file>qml/LeftRight.qml</file>
     </qresource>
 </RCC>
