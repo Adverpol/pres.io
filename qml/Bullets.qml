@@ -15,7 +15,7 @@ Item {
 
     property int fontSize: 26
     property int titleFontSize: 30
-    readonly property bool isActive: bullets_view.active_index >= 0
+    readonly property bool isActive: bullets_view.active_index >= 0 || bullets_view.count === 0
 
     opacity: isActive ? 1 : 0.02
 
