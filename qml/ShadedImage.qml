@@ -24,7 +24,7 @@ ShadedRectangle {
     }
 
     function previous(){
-        opacity = 0.1;
+        opacity = 0.02;
         // Don't first hide and then go back, hide and imm
         return false;
     }
