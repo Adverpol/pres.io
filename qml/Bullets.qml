@@ -15,13 +15,26 @@ Item {
 
     property int fontSize: 26
     property int titleFontSize: 30
-    readonly property bool isActive: bullets_view.active_index >= 0 || bullets_view.count === 0
+    // Don't use the bullet count: having a title without any bullets/text is also supported,
+    // want to be able to hide/show the title
+    property bool isActive: false
 
     opacity: isActive ? 1 : 0.04
 
     anchors { horizontalCenter: parent.horizontalCenter }
 
     function next(){
+        if (! isActive){
+            isActive = true;
+
+            // After activating the title we can return. If there is no title we now have
+            // an empty white rectangle, that's not pretty so move on to activate the first
+            // item
+            if (title_text.text){
+                return true;
+            }
+        }
+
         if (bullets_view.active_index + 1 < bullets_view.count){
             bullets_view.active_index += 1;
             return true;
@@ -32,11 +45,20 @@ Item {
 
     function previous(){
         if (bullets_view.active_index < 0){
+            isActive = false;
             return false;
         }
 
         bullets_view.active_index -= 1;
-        return true;
+
+        if (bullets_view.active_index < 0 && ! title_text.text){
+            // In case of bullets without title, don't go back to an empty white rectangle
+            // but immediately go back to the previous presentation item
+            isActive = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 
     function getPresentationState(){
