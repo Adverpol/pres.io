@@ -37,8 +37,8 @@ QString Util::highlightPlainText(QString plainText, QString fontFamily, int font
 // todo!sv reimplement using QSyntaxHighlighter
 QString Util::highlightRichText(QString richText)
 {
-    auto keywords = {"int", "float", "double", "long", "char", "auto", "const", "void",
-                     "struct", "class", "public", "template", "this", "typename",
+    auto keywords = {"int", "float", "double", "long", "char", "auto", "const", "void", "bool",
+                     "struct", "class", "public", "template", "this", "typename", "protected",
                      "return", "if", "then", "else", "while", "break", "include", "#pragma once"};
 
     // Whole next code should be replaced by QSyntaxHighlighter or even better a library that does that
