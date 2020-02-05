@@ -39,6 +39,7 @@ QString Util::highlightRichText(QString richText)
 {
     auto keywords = {"int", "float", "double", "long", "char", "auto", "const", "void", "bool",
                      "struct", "class", "public", "template", "this", "typename", "protected",
+                     "private", "override", "virtual",
                      "return", "if", "then", "else", "while", "break", "include", "#pragma once"};
 
     // Whole next code should be replaced by QSyntaxHighlighter or even better a library that does that
