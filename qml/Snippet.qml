@@ -23,10 +23,10 @@ Item {
     function previous(){
         if (state === "active"){
             state = "";
-            return true;
-        } else {
-            return false;
         }
+
+        // Immediately go back to the previous presentation item
+        return false;
     }
     function next(){
         if (state === ""){
