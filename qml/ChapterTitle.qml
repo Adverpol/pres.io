@@ -6,6 +6,6 @@ Text {
     verticalAlignment: Text.AlignVCenter
     font.family: "Cantarell Thin"
     anchors.horizontalCenter: parent.horizontalCenter
-    text: "High Level"
+    text: "<Title>"
     font.pointSize: 50
 }
