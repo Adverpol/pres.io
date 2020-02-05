@@ -18,6 +18,7 @@ Item {
             + snippet.topPadding
             + snippet.bottomPadding
     anchors { horizontalCenter: parent.horizontalCenter }
+    opacity: 0.1
 
     function previous(){
         if (state === "active"){
@@ -58,7 +59,6 @@ Item {
         id: snippet
 
         anchors { fill: parent }
-        opacity: 0.1
 
         background: Item {}
 
@@ -112,7 +112,7 @@ Item {
     states: [
         State {
             name: "active"
-            PropertyChanges { target: snippet; opacity: 1. }
+            PropertyChanges { target: root; opacity: 1. }
         }
     ]
 }
