@@ -10,6 +10,24 @@ ShadedRectangle {
     width: img.width
     height: img.height
     anchors { horizontalCenter: parent.horizontalCenter }
+    opacity: 0.1
+
+    Behavior on opacity {NumberAnimation {duration: cpp_util.isActive ? 200 : 0}}
+
+    function next(){
+        if (opacity < 1){
+            opacity = 1;
+            return true;
+        }
+
+        return false;
+    }
+
+    function previous(){
+        opacity = 0.1;
+        // Don't first hide and then go back, hide and imm
+        return false;
+    }
 
     Image {
         id: img
