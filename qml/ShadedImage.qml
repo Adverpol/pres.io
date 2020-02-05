@@ -10,7 +10,7 @@ ShadedRectangle {
     width: img.width
     height: img.height
     anchors { horizontalCenter: parent.horizontalCenter }
-    opacity: 0.1
+    opacity: 0.02
 
     Behavior on opacity {NumberAnimation {duration: cpp_util.isActive ? 200 : 0}}
 
