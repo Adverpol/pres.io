@@ -54,6 +54,7 @@ Item {
                     width: parent.width
                     height: 50
                     font.pointSize: 34
+                    font.italic: true
                     color: "white"
 
                     horizontalAlignment: Text.AlignHCenter
