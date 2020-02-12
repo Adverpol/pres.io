@@ -19,6 +19,13 @@ Item {
     function setPresentationState(savedState){
     }
 
+    function do_print(printer, state){
+        printer.printMarkdown(state,
+                              "**" + title + "**\n\n"
+                              + "*" + subtitle + "*\n\n"
+                              + author)
+    }
+
     Column {
         anchors { fill: parent; topMargin: 250}
         spacing: 10

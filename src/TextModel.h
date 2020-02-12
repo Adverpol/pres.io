@@ -20,7 +20,7 @@ class TextModel : public QAbstractListModel
 {
 Q_OBJECT
 
-Q_PROPERTY(QString text READ getEmptyString WRITE setText NOTIFY dummySignal)
+Q_PROPERTY(QString text READ getText WRITE setText NOTIFY dummySignal)
 
 signals:
     void dummySignal();
@@ -28,7 +28,7 @@ signals:
 public:
     TextModel();
 
-    QString getEmptyString() const { return ""; }
+    QString getText() const { return m_originalText; }
     void    setText(const QString& text);
 
     virtual int rowCount(const QModelIndex &parent) const override;
@@ -45,5 +45,6 @@ private:
         IndentRole
     };
 
+    QString m_originalText;
     std::vector<TextItem> m_items;
 };

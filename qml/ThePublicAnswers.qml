@@ -57,6 +57,15 @@ Column {
         return false;
     }
 
+    function do_print(printer, state){
+        var string = "### " + question + "\n\n";
+        for (var idx in model){
+            string += "1. " + model[idx] + "\n";
+        }
+
+        printer.printMarkdown(state, string);
+    }
+
     width: parent.width
     anchors { left: parent.left; right: parent.right; margins: 20 }
 

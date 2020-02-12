@@ -9,12 +9,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Core Quick Xml Gui Qml REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick Xml Gui Qml PrintSupport REQUIRED)
 
 set (FILES
   src/main.cpp
   src/Util.cpp
   src/Launcher.cpp
+  src/Printer.cpp
   src/TextModel.cpp
   )
 
@@ -24,5 +25,5 @@ add_executable(${PROJECT_NAME}
 )
   
 target_link_libraries(${PROJECT_NAME}
-  Qt5::Core Qt5::Quick Qt5::Xml Qt5::Gui Qt5::Qml
+  Qt5::Core Qt5::Quick Qt5::Xml Qt5::Gui Qt5::Qml Qt5::PrintSupport
 )

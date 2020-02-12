@@ -104,6 +104,18 @@ Column {
         }
     }
 
+    function do_print(printer, state)
+    {
+        for (var idx in children){
+            if ('do_print' in children[idx]){
+                children[idx].do_print(printer, state);
+//                printer.newLine(state);
+            } else {
+                console.info(children[idx], "does not have do_print");
+            }
+        }
+    }
+
     onActiveChildChanged: {
         y = - children[activeChild].y + topPadding;
     }

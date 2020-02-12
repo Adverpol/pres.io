@@ -9,6 +9,8 @@ Item {
 
     // set inline to true to remove background colour
     property bool inline: false
+    // Used to set the formatted text of snippet. Good to have an unformatted copy here to allow e.g. printing
+    // with custom display settings
     property string code: ""
     property int border: 50
     property int fontsize: 16
@@ -19,6 +21,8 @@ Item {
             + snippet.bottomPadding
     anchors { horizontalCenter: parent.horizontalCenter }
     opacity: 0.1
+
+    CheckBox {}
 
     function previous(){
         if (state === "active"){
@@ -45,6 +49,11 @@ Item {
         state = savedState["state"];
     }
 
+    function do_print(printer, state){
+        printer.newLine(state);
+        printer.printHtml(state, cpp_util.highlightRichText(cpp_util.plainToRichText(code, "black", snippet.font.family, 8)));
+    }
+
     ShadedRectangle {
         id: background
 
@@ -63,14 +72,14 @@ Item {
         background: Item {}
 
         color: root.inline ? "black" : "white"
-        text: cpp_util.highlightRichText(cpp_util.plainToRichText(code, font.family, font.pointSize))
+        text: cpp_util.highlightRichText(cpp_util.plainToRichText(code, color, font.family, font.pointSize))
         font.pointSize: root.fontsize
         font.family: "consolas"
         textFormat: TextEdit.RichText
 
         onEditingFinished: {
             // Do in these two steps to break the binding loop
-            var rich = cpp_util.plainToRichText(getText(0, length), font.family, font.pointSize);
+            var rich = cpp_util.plainToRichText(getText(0, length), color, font.family, font.pointSize);
             text = cpp_util.highlightRichText(rich);
         }
 

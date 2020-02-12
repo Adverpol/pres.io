@@ -343,6 +343,28 @@ Window {
                     spacing: 5
                     anchors { verticalCenter: parent.verticalCenter; left: parent.left }
 
+                    SidebarButton {
+                        text: "Print"
+
+                        onClicked: {
+                            var printer = Qt.createQmlObject("import presio 1.0; Printer { id: printer }",
+                                                            parent,
+                                                            "dynamic_printer");
+                            var state = Qt.createQmlObject("import presio 1.0; PrintState { id: printstate }",
+                                                                parent,
+                                                                "dynamic_printstate");
+
+                            try {
+                                editor.loaded_object.do_print(printer, state);
+                            } catch(error) {
+                                console.error(error);
+                            }
+
+                            state.destroy();
+                            printer.destroy();
+                        }
+                    }
+
                     CheckBox {
                         id: animate_check
 

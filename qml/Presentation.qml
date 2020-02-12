@@ -73,4 +73,15 @@ SwipeView {
             }
         }
     }
+
+    function do_print(printer, state)
+    {
+        for (var idx in contentChildren){
+            if ('do_print' in contentChildren[idx]){
+                contentChildren[idx].do_print(printer, state);
+            } else {
+                console.info(contentChildren[idx], "does not have do_print");
+            }
+        }
+    }
 }

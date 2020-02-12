@@ -6,7 +6,8 @@
 #include <iostream>
 
 
-QString Util::plainToRichText(QString text, QString fontFamily, int fontPointSize)
+QString Util::plainToRichText(QString text, QColor textColour,
+                              QString fontFamily, int fontPointSize)
 {
     // Use this to get the whole html shebaing, doctype and everything included
     QTextDocument doc;
@@ -19,7 +20,14 @@ QString Util::plainToRichText(QString text, QString fontFamily, int fontPointSiz
     }
 
     doc.setPlainText(text);
-    return doc.toHtml();
+
+    // Feels pretty crappy to do. The first doc does more than adding <body> though, all lines are wrapped in
+    // <p> and some css is added.
+    QTextDocument doc2;
+    doc2.setDefaultStyleSheet(QString("body { color : %1 }").arg(textColour.name()));
+    doc2.setHtml(doc.toHtml());
+
+    return doc2.toHtml();
 }
 
 QString Util::richToPlainText(QString text)
@@ -29,9 +37,9 @@ QString Util::richToPlainText(QString text)
     return doc.toPlainText();
 }
 
-QString Util::highlightPlainText(QString plainText, QString fontFamily, int fontPointSize)
+QString Util::highlightPlainText(QString plainText, QColor textColour, QString fontFamily, int fontPointSize)
 {
-    return highlightRichText(plainToRichText(plainText, fontFamily, fontPointSize));
+    return highlightRichText(plainToRichText(plainText, textColour, fontFamily, fontPointSize));
 }
 
 // todo!sv reimplement using QSyntaxHighlighter

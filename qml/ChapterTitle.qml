@@ -18,6 +18,10 @@ Text {
         return false;
     }
 
+    function do_print(printer, state){
+        printer.printMarkdown(state, '## ' + text);
+    }
+
     verticalAlignment: Text.AlignVCenter
     font.family: "Cantarell Thin"
     anchors.horizontalCenter: parent.horizontalCenter

@@ -13,5 +13,6 @@
         <file>qml/ShadedImage.qml</file>
         <file>qml/ChapterTitle.qml</file>
         <file>qml/LeftRight.qml</file>
+        <file>qml/SidebarButton.qml</file>
     </qresource>
 </RCC>

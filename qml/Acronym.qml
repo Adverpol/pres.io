@@ -56,6 +56,15 @@ Column {
         state = savedState["state"];
     }
 
+    function do_print(printer, state){
+        var acronym = "";
+        for (var idx in strings){
+            acronym += strings[idx][0];
+        }
+
+        printer.printMarkdown(state, "### " + acronym + "\n\n" + strings.join(" "));
+    }
+
     ListView {
         id: view
 

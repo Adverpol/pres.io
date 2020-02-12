@@ -29,6 +29,15 @@ ShadedRectangle {
         return false;
     }
 
+    function do_print(printer, state){
+        printer.newLine(state);
+        printer.printImage(state, source);
+
+//        grabToImage(function(result) {
+//            printer.printImage(state, result);
+//        });
+    }
+
     Image {
         id: img
     }

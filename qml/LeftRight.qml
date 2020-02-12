@@ -8,6 +8,9 @@ Row {
     property alias left_item:  left_loader.sourceComponent
     property alias right_item: right_loader.sourceComponent
 
+    readonly property alias left_object: left_loader.item
+    readonly property alias right_object: right_loader.item
+
     width:  parent.width
     height: Math.max(children[0].height, children[1].height)
 
@@ -25,6 +28,14 @@ Row {
         }
 
         return left_loader.item.previous();
+    }
+
+    function do_print(printer, state){
+        printer.startColumns(state, 2);
+        left_object.do_print(printer, state);
+        printer.nextColumn(state);
+        right_object.do_print(printer, state);
+        printer.endColumns(state);
     }
 
     // Wrap in an item to avoid setting loader width directly, most of the presentation

@@ -97,6 +97,7 @@ TextModel::TextModel()
 void TextModel::setText(const QString &text)
 {
     beginResetModel();
+    m_originalText = text;
     m_items = parseText(text);
     endResetModel();
 }

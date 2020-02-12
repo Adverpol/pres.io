@@ -67,7 +67,15 @@ Item {
 
     function setPresentationState(savedState){
         bullets_view.active_index = savedState["active_index"];
-    }    
+    }
+
+    function do_print(printer, state){
+        if (title){
+            printer.printMarkdown(state, '### '  + title + '\n\n' + text);
+        } else {
+            printer.printMarkdown(state, text);
+        }
+    }
 
     ShadedRectangle {
         id: background
